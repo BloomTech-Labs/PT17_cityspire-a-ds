@@ -17,7 +17,7 @@ requests = "*"
 bs4 = "*"
 lxml = "*"
 pypika = "*"
-pandas = "*"ut
+pandas = "*"
 asyncpg = "*"
 databases = {extras = ["postgresql"], version = "*"}
 sklearn = "*"
