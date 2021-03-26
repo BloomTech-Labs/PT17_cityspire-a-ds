@@ -1,6 +1,7 @@
 import requests
 import os
 import datetime
+from bs4 import BeautifulSoup
 from fastapi import APIRouter, HTTPException, Depends
 from pydantic import BaseModel
 from app.ml import City, validate_city
@@ -55,3 +56,87 @@ async def current_weather(city:City):
         "Feels Like": str(main['feels_like'])+" F\N{DEGREE SIGN}",
         "Pressure": str(main['pressure'])+" hPa"
     }
+
+@router.post('/api/job_opportunities')
+async def job_opportunities(position, city:City):
+    """Returns jobs opportunities from indeed.com
+
+    Fetch first 10 job opportunities
+    - Job title,
+    - Company,
+    - Job location
+    - Post Date,
+    - Extract Date,
+    - Job Description,
+    - Salary,
+    - Job Url
+
+    args:
+        - position: desired job opportunity
+        - city: target city
+
+    returns:
+        Dictionary that contains the requested data, which is converted
+        by fastAPI to a json object.
+
+    """
+    # Run the main program reouting
+    records = []  # creating the record list
+
+    city_name = validate_city(city)
+    location = city_name.city + ' ' + city_name.state
+    url = get_url(position, location)  # create the url while passing in the position and location.
+
+    response = requests.get(url)
+    soup = BeautifulSoup(response.text, 'html.parser')
+    cards = soup.find_all('div', 'jobsearch-SerpJobCard')
+
+    for card in cards:
+        record = get_record(card)
+        records.append(record)
+
+    #also return total number of jobs
+    try:
+        total_jobs = soup.find('div', id='searchCountPages').text.strip()
+        total = total_jobs.split()[-2:]
+        jobs = ' '.join(total)
+    except AttributeError:
+        total_jobs = ''
+        jobs = ''
+
+    return {"Search Results":jobs, "Top 10 Listings": records}
+
+def get_record(card):
+    """Extract job date from a single record"""
+    atag = card.h2.a
+    job_title = atag.get('title')
+    company = card.find('span', 'company').text.strip()
+    job_location = card.find('div', 'recJobLoc').get('data-rc-loc')
+    job_summary = card.find('div', 'summary').text.strip()
+    post_date = card.find('span', 'date').text.strip()
+
+    try:
+        salary = card.find('span', 'salarytext').text.strip()
+    except AttributeError:
+        salary = ''
+
+    extract_date = datetime.datetime.today().strftime('%Y-%m-%d')
+    job_url = 'https://www.indeed.com' + atag.get('href')
+
+    record = {'Job Title': job_title,
+              'Company': company,
+              'Location': job_location,
+              'Date Posted': post_date,
+              'Extract Date': extract_date,
+              'Description': job_summary,
+              'Salary': salary,
+              'Job Url': job_url}
+
+    return record
+
+def get_url(position, location):
+    "Generate a url based on position and location"
+
+    template = "https://www.indeed.com/jobs?q={}&l={}"
+    url = template.format(position, location)
+    return url
