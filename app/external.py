@@ -10,6 +10,8 @@ from dotenv import dotenv_values, load_dotenv
 
 router = APIRouter()
 load_dotenv()
+
+
 weather_api = os.getenv("WEATHER_API_KEY")
 
 
