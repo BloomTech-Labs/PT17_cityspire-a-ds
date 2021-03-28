@@ -24,6 +24,7 @@ sklearn = "*"
 plotly = "*"
 gunicorn = "*"
 typing-extensions = "*"
+pytest = "*"
 
 [requires]
 python_version = "3"
