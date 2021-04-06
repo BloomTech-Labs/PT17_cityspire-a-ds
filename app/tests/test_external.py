@@ -93,3 +93,54 @@ def test_job_opportunities_validates_json_resonse_schema():
     # Validate will raise exception if given json is not
     # what is described in schema.
     validate(instance=resp_body, schema=job_opportunities_schema)
+
+##########################################################################################################
+
+# Rental Listing Test
+def test_rental_listing_check_status_code_equals_200():
+    data = {
+        "api_key": os.getenv("RENTAL_API_KEY"),
+        "city": "New York",
+        "state": "NY",
+        "prop_type" : "condo",
+        "limit" : 1
+    }
+    response = requests.post("http://127.0.0.1:8000/streamlined_rent_list?", json=data)
+
+rental_listings_schema = {
+    "$schema": "https://json-schema.org/schema#",
+    "Latitude" : "integer",
+    "Longitude" : "integer",
+    "Street Address" : "string",
+    "City" : "string",
+    "State" : "string",
+    "Bedrooms" : "integer",
+    "Bathrooms" : "integer",
+    "Cats Allowed" : "boolean",
+    "Dogs Allowed" : "boolean",
+    "List Price": "integer",
+    "Ammenities" : "array",
+    "Photos" : "object",
+}
+
+def test_rental_listing_validates_json_response_schema():
+    data = {
+        "api_key": os.getenv("RENTAL_API_KEY"),
+        "city": "New York",
+        "state": "NY",
+        "prop_type" : "condo",
+        "limit" : 1
+    }
+    response = requests.post("http://127.0.0.1:8000/streamlined_rent_list?", json=data)
+
+    # Validate response headers and body contents, e.g. status code.
+    assert response.status_code == 200
+
+    # Validate response content type header
+    assert response.headers["Content-Type"] == "application/json"
+
+    resp_body = response.json()
+
+    # Validate will raise exception if given json is not
+    # what is described in schema.
+    validate(instance=resp_body, schema=rental_listings_schema)
