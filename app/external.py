@@ -197,9 +197,6 @@ async def rental_listing(
     response_for_rent=requests.request("GET", url, params=querystring, headers=headers)
     response = response_for_rent.json()['data']['results']
 
-    pp = pprint.PrettyPrinter(indent=4)
-    pp.pprint(response)
-
     rental_list=[]
 
     for i in range(limit):
@@ -208,13 +205,31 @@ async def rental_listing(
         line = response[i]['location']['address']['line']
         city = response[i]['location']['address']['city']
         state = response[i]['location']['address']['state']
-        baths = response[i]['description']['baths_max']
-        bedrooms = response[i]['description']['beds_max']
-        cats_allowed = response[i]['pet_policy']['cats']
-        dogs_allowed = response[i]['pet_policy']['dogs']
+        try:
+            baths = response[i]['description']['baths_max']
+        except AttributeError:
+            baths = 0
+        try:
+            bedrooms = response[i]['description']['beds_max']
+        except AttributeError:
+            bedrooms = 0
+        try:
+            cats_allowed = response[i]['pet_policy']['cats']
+        except AttributeError:
+            cats_allowed = False
+        try:
+            dogs_allowed = response[i]['pet_policy']['dogs']
+        except AttributeError:
+            dogs_allowed = False
         list_price = response[i]['list_price_max']
-        ammenities = response[i]['tags']
-        photos = response[i]['photos']
+        try:
+            ammenities = response[i]['tags']
+        except AttributeError:
+            ammenities = []
+        try:
+            photos = response[i]['photos']
+        except AttributeError:
+            photos = None
 
     element={
         'Latitude': lat,
