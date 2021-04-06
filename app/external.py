@@ -231,23 +231,20 @@ async def rental_listing(
         except AttributeError:
             photos = None
 
-    element={
-        'Latitude': lat,
-        'Longitude': lon,
-        'Street Address': line,
-        'City': city,
-        'State': state,
-        'Bedrooms': bedrooms,
-        'Bathrooms': baths,
-        'Cats Allowed': cats_allowed,
-        'Dogs Allowed': dogs_allowed,
-        'List Price': list_price,
-        'Ammenities': ammenities,
-        'Photos': photos,
+        elements={
+            'Latitude': lat,
+            'Longitude': lon,
+            'Street Address': line,
+            'City': city,
+            'State': state,
+            'Bedrooms': bedrooms,
+            'Bathrooms': baths,
+            'Cats Allowed': cats_allowed,
+            'Dogs Allowed': dogs_allowed,
+            'List Price': list_price,
+            'Ammenities': ammenities,
+            'Photos': photos,
       }
-
-    rental_list.append(element)
-
-    pp.pprint(rental_list)
+        rental_list.append(elements)
 
     return rental_list
