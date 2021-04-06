@@ -62,6 +62,7 @@ async def current_weather(city:City):
 
 ##############################################################################################
 
+#https://www.youtube.com/watch?v=eN_3d4JrL_w
 @router.post('/api/job_opportunities')
 async def job_opportunities(position, city:City):
     """Returns jobs opportunities from indeed.com
