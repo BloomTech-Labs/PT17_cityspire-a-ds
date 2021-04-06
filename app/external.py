@@ -7,6 +7,7 @@ from pydantic import BaseModel, BaseSettings, SecretStr
 from app.ml import City, validate_city
 from app.state_abbr import us_state_abbrev as abbr
 from dotenv import dotenv_values, load_dotenv
+import pprint
 
 router = APIRouter()
 load_dotenv()
@@ -151,7 +152,6 @@ class Settings(BaseSettings):
 
     RENTAL_API_KEY: SecretStr
 
-
     class Config:
         env_file = ".env"
 
@@ -164,7 +164,7 @@ headers={'x-rapidapi-key': os.getenv("RENTAL_API_KEY"),
 async def rental_listing(
             city:City,
             api_key=settings.RENTAL_API_KEY,
-            prop_type: str="condo",
+            prop_type: str="apartment",
             limit: int=5):
 
     """
@@ -197,8 +197,8 @@ async def rental_listing(
     response_for_rent=requests.request("GET", url, params=querystring, headers=headers)
     response = response_for_rent.json()['data']['results']
 
-    # pp = pprint.PrettyPrinter(indent=4)
-    # pp.pprint(response)
+    pp = pprint.PrettyPrinter(indent=4)
+    pp.pprint(response)
 
     rental_list=[]
 
@@ -232,5 +232,7 @@ async def rental_listing(
       }
 
     rental_list.append(element)
+
+    pp.pprint(rental_list)
 
     return rental_list
