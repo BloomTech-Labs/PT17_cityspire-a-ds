@@ -142,3 +142,4 @@ def get_url(position, location):
     template = "https://www.indeed.com/jobs?q={}&l={}"
     url = template.format(position, location)
     return url
+
