@@ -1,3 +1,4 @@
+import os
 import requests
 import json
 from jsonschema import validate
@@ -118,8 +119,8 @@ rental_listings_schema = {
     "State" : "string",
     "Bedrooms" : "integer",
     "Bathrooms" : "integer",
-    "Cats Allowed" : "boolean",
-    "Dogs Allowed" : "boolean",
+    "Cats Allowed" : {"type":["boolean", "string"]},
+    "Dogs Allowed" : {"type":["boolean", "string"]},
     "List Price": "integer",
     "Ammenities" : "array",
     "Photos" : "array",
