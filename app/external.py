@@ -4,10 +4,11 @@ import datetime
 import json
 from bs4 import BeautifulSoup
 from fastapi import APIRouter, HTTPException, Depends
-from pydantic import BaseModel
+from pydantic import BaseModel, BaseSettings, SecretStr
 from app.ml import City, validate_city
 from app.state_abbr import us_state_abbrev as abbr
 from dotenv import dotenv_values, load_dotenv
+import pprint
 
 router = APIRouter()
 load_dotenv()
@@ -60,6 +61,9 @@ async def current_weather(city:City):
         "Pressure": str(main['pressure'])+" hPa"
     }
 
+##############################################################################################
+
+#https://www.youtube.com/watch?v=eN_3d4JrL_w
 @router.post('/api/job_opportunities')
 async def job_opportunities(position, city:City):
     """Returns jobs opportunities from indeed.com
@@ -212,3 +216,113 @@ async def get_forecast(city: City, function_=generate_climate_url):
     data_dict['avg_low'] = avg_low_monthly
 
     return data_dict
+
+
+class Settings(BaseSettings):
+
+    RENTAL_API_KEY: SecretStr
+
+    class Config:
+        env_file = ".env"
+
+settings = Settings()
+
+headers={'x-rapidapi-key': os.getenv("RENTAL_API_KEY"),
+            'x-rapidapi-host':  "realtor-com-real-estate.p.rapidapi.com"}
+
+@router.post('/api/rental_listing')
+async def rental_listing(
+            city:City,
+            api_key=settings.RENTAL_API_KEY,
+            beds_min: int=1,
+            baths_min: int=1,
+            prop_type: str="apartment",
+            limit: int=5):
+
+    """
+    args:
+    - api_key
+    - city: str
+    - state: str Two-letter abbreviation
+    - beds_min: int number of minimum bedrooms
+    - baths_min: int number of minimum bathrooms
+    - prop_type: str ('condo', 'single_family', 'apartment', 'multi_family')
+    - limit: int number of results to populate
+
+
+    returns:
+        Dictionary that contains the requested data, which is converted
+        by fastAPI to a json object.
+    """
+
+    city = validate_city(city)
+    location_city = city.city
+    location_state = city.state
+
+    url="https://realtor-com-real-estate.p.rapidapi.com/for-rent"
+
+    querystring={
+                "city": location_city,
+                "state_code": location_state,
+                "limit": limit,
+                "offset": "0",
+                "beds_min": beds_min,
+                "baths_min": baths_min,
+                "sort": "relevance",
+                "prop_type": prop_type}
+
+    response_for_rent=requests.request("GET", url, params=querystring, headers=headers)
+    response = response_for_rent.json()['data']['results']
+
+    rental_list=[]
+
+    for i in range(limit):
+        lat = response[i]['location']['address']['coordinate']['lat']
+        lon  = response[i]['location']['address']['coordinate']['lon']
+        line = response[i]['location']['address']['line']
+        city = response[i]['location']['address']['city']
+        state = response[i]['location']['address']['state']
+        pet_policy = response[i]['pet_policy']
+        try:
+            baths = response[i]['description']['baths_max']
+        except AttributeError:
+            baths = 0
+        try:
+            bedrooms = response[i]['description']['beds_max']
+        except AttributeError:
+            bedrooms = 0
+        if pet_policy != None:
+            cats_allowed = response[i]['pet_policy']['cats']
+        else:
+            cats_allowed = 'Unknown'
+        if pet_policy != None:
+            dogs_allowed = response[i]['pet_policy']['dogs']
+        else:
+            dogs_allowed = 'Unknown'
+        list_price = response[i]['list_price_max']
+        try:
+            ammenities = response[i]['tags']
+        except AttributeError:
+            ammenities = []
+        try:
+            photos = response[i]['photos']
+        except AttributeError:
+            photos = None
+
+        elements={
+            'Latitude': lat,
+            'Longitude': lon,
+            'Street Address': line,
+            'City': city,
+            'State': state,
+            'Bedrooms': bedrooms,
+            'Bathrooms': baths,
+            'Cats Allowed': cats_allowed,
+            'Dogs Allowed': dogs_allowed,
+            'List Price': list_price,
+            'Ammenities': ammenities,
+            'Photos': photos,
+      }
+        rental_list.append(elements)
+
+    return rental_list

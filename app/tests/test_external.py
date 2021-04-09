@@ -1,3 +1,4 @@
+import os
 import requests
 import json
 from jsonschema import validate
@@ -93,3 +94,58 @@ def test_job_opportunities_validates_json_resonse_schema():
     # Validate will raise exception if given json is not
     # what is described in schema.
     validate(instance=resp_body, schema=job_opportunities_schema)
+
+##########################################################################################################
+
+# Rental Listing Test
+def test_rental_listing_check_status_code_equals_200():
+    data = {
+        "api_key": os.getenv("RENTAL_API_KEY"),
+        "city": "New York",
+        "state": "NY",
+        "beds_min": 1,
+        "baths_min": 1,
+        "prop_type" : "apartment",
+        "limit" : 5
+    }
+    response = requests.post("http://127.0.0.1:8000/api/rental_listing?", json=data)
+
+rental_listings_schema = {
+    "$schema": "https://json-schema.org/schema#",
+    "Latitude" : "number",
+    "Longitude" : "number",
+    "Street Address" : "string",
+    "City" : "string",
+    "State" : "string",
+    "Bedrooms" : "integer",
+    "Bathrooms" : "integer",
+    "Cats Allowed" : {"type":["boolean", "string"]},
+    "Dogs Allowed" : {"type":["boolean", "string"]},
+    "List Price": "integer",
+    "Ammenities" : "array",
+    "Photos" : "array",
+}
+
+def test_rental_listing_validates_json_response_schema():
+    data = {
+        "api_key": os.getenv("RENTAL_API_KEY"),
+        "city": "New York",
+        "state": "NY",
+        "beds_min": 1,
+        "baths_min": 1,
+        "prop_type" : "apartment",
+        "limit" : 5
+    }
+    response = requests.post("http://127.0.0.1:8000/api/rental_listing?", json=data)
+
+    # Validate response headers and body contents, e.g. status code.
+    assert response.status_code == 200
+
+    # Validate response content type header
+    assert response.headers["Content-Type"] == "application/json"
+
+    resp_body = response.json()
+
+    # Validate will raise exception if given json is not
+    # what is described in schema.
+    validate(instance=resp_body, schema=rental_listings_schema)
