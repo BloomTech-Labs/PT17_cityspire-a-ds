@@ -261,7 +261,7 @@ async def rental_listing(
 
 ########################################################################################################
 
-SCHOOLS_CSV = 'https://raw.githubusercontent.com/Lambda-School-Labs/PT17_cityspire-a-ds/main/notebooks/datasets/data/schools/schools_cleaned.csv'
+SCHOOLS_CSV = 'https://raw.githubusercontent.com/jiobu1/labspt15-cityspire-g-ds/main/notebooks/datasets/data/schools/schools_cleaned.csv'
 
 class School_Data():
     """
