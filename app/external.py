@@ -1,6 +1,7 @@
 import requests
 import os
 import datetime
+import pandas as pd
 from bs4 import BeautifulSoup
 from fastapi import APIRouter, HTTPException, Depends
 from pydantic import BaseModel, BaseSettings, SecretStr
@@ -257,3 +258,68 @@ async def rental_listing(
         rental_list.append(elements)
 
     return rental_list
+
+########################################################################################################
+
+SCHOOLS_CSV = 'https://raw.githubusercontent.com/Lambda-School-Labs/PT17_cityspire-a-ds/main/notebooks/datasets/data/schools/schools_cleaned.csv'
+
+class School_Data():
+    """
+    Locates specific school data for the city
+    Number of schools based on
+    - Ratings -> sorted, listed from highest to lowest
+    - Type -> public, private, charter
+    - Grades -> pre-k, elementary, middle, high school
+    - District -> district in city
+    """
+    def __init__(self, current_city):
+        self.current_city = current_city
+        self.dataframe = pd.read_csv(SCHOOLS_CSV)
+        self.subset = self.dataframe[self.dataframe['City'] == self.current_city.city]
+
+    def pre_k(self):
+        pre_k_subset = self.subset['Pre-Kindergarten (PK)'] == 1
+        return self.subset.loc[pre_k_subset]
+
+    def elementary(self):
+        elementary_subset = self.subset['Elementary (K-5)'] == 1
+        return self.subset.loc[elementary_subset]
+
+    def middle_school(self):
+        middle_school_subset = self.subset['Middle School (6-8)'] == 1
+        return self.subset.loc[middle_school_subset]
+
+    def high_school(self):
+        high_school_subset = self.subset['High School (9-12)'] == 1
+        return self.subset.loc[high_school_subset]
+
+
+@router.post('/api/schools_listing')
+async def schools_listings(current_city:City, school_category):
+    """
+    Listing of school information for the city
+
+    ### Query Parameters
+    - city
+    - school category -> pre-k, elementary, middle school, high school
+
+    ### Response
+    sorted dataframe as JSON string to render with react-plotly.js
+    """
+
+    city = validate_city(current_city)
+    school_data = School_Data(city)
+
+    school_category = ['pre-k', 'elementary', 'middle school', 'high school']
+
+    # School Category
+    if school_category == 'pre-k':
+        school_listing = school_data.pre_k()
+    elif school_category == 'elementary':
+        school_listing = school_data.elementary()
+    elif school_category == 'middle school':
+        school_listing = school_data.elementary()
+    else:
+        school_listing = school_data.high_school()
+
+    return school_listing.to_dict('records')
