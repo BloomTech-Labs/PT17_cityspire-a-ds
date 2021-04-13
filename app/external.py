@@ -1,6 +1,7 @@
 import requests
 import os
 import datetime
+import pandas as pd
 import json
 from bs4 import BeautifulSoup
 from fastapi import APIRouter, HTTPException, Depends
@@ -16,7 +17,7 @@ load_dotenv()
 
 weather_api = os.getenv("WEATHER_API_KEY")
 
-
+# Weather Endpoint
 # https://github.com/juhilsomaiya/API-Integrations-Python/blob/master/Weather_forecast/main.p
 @router.post('/api/temperature')
 async def current_weather(city:City):
@@ -63,7 +64,8 @@ async def current_weather(city:City):
 
 ##############################################################################################
 
-#https://www.youtube.com/watch?v=eN_3d4JrL_w
+# Jobs Endpoint
+## https://github.com/israel-dryer/Indeed-Job-Scraper/blob/master/indeed-job-scraper.ipynb
 @router.post('/api/job_opportunities')
 async def job_opportunities(position, city:City):
     """Returns jobs opportunities from indeed.com
@@ -140,8 +142,7 @@ def get_record(card):
               'Job Url': job_url}
 
     return record
-
-
+  
 def get_url(position, location):
     "Generate a url based on position and location"
 
@@ -149,7 +150,9 @@ def get_url(position, location):
     url = template.format(position, location)
     return url
 
+############################################################################################## 
 
+# Climate Endpoint
 def generate_climate_url(city, state) -> str:
     """Cleans input if necessary and formats the url to pass it to get_forecast().
 
@@ -217,7 +220,9 @@ async def get_forecast(city: City, function_=generate_climate_url):
 
     return data_dict
 
+############################################################################################## 
 
+# Rental Endpoint
 class Settings(BaseSettings):
 
     RENTAL_API_KEY: SecretStr
@@ -326,3 +331,70 @@ async def rental_listing(
         rental_list.append(elements)
 
     return rental_list
+
+########################################################################################################
+
+# Schools Endpoint
+
+SCHOOLS_CSV = 'https://raw.githubusercontent.com/jiobu1/labspt15-cityspire-g-ds/main/notebooks/datasets/data/schools/schools_cleaned.csv'
+
+class School_Data():
+    """
+    Locates specific school data for the city
+    Number of schools based on
+    - Ratings -> sorted, listed from highest to lowest
+    - Type -> public, private, charter
+    - Grades -> pre-k, elementary, middle, high school
+    - District -> district in city
+    """
+    def __init__(self, current_city):
+        self.current_city = current_city
+        self.dataframe = pd.read_csv(SCHOOLS_CSV)
+        self.subset = self.dataframe[self.dataframe['City'] == self.current_city.city]
+
+    def pre_k(self):
+        pre_k_subset = self.subset['Pre-Kindergarten (PK)'] == 1
+        return self.subset.loc[pre_k_subset]
+
+    def elementary(self):
+        elementary_subset = self.subset['Elementary (K-5)'] == 1
+        return self.subset.loc[elementary_subset]
+
+    def middle_school(self):
+        middle_school_subset = self.subset['Middle School (6-8)'] == 1
+        return self.subset.loc[middle_school_subset]
+
+    def high_school(self):
+        high_school_subset = self.subset['High School (9-12)'] == 1
+        return self.subset.loc[high_school_subset]
+
+
+@router.post('/api/schools_listing')
+async def schools_listings(current_city:City, school_category):
+    """
+    Listing of school information for the city
+
+    ### Query Parameters
+    - city
+    - school category -> pre-k, elementary, middle school, high school
+
+    ### Response
+    sorted dataframe as JSON string to render with react-plotly.js
+    """
+
+    city = validate_city(current_city)
+    school_data = School_Data(city)
+
+    school_category = ['pre-k', 'elementary', 'middle school', 'high school']
+
+    # School Category
+    if school_category == 'pre-k':
+        school_listing = school_data.pre_k()
+    elif school_category == 'elementary':
+        school_listing = school_data.elementary()
+    elif school_category == 'middle school':
+        school_listing = school_data.elementary()
+    else:
+        school_listing = school_data.high_school()
+
+    return school_listing.to_dict('records')
