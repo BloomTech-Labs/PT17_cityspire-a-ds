@@ -218,7 +218,7 @@ async def get_forecast(city: City, function_=generate_climate_url):
     data_dict['avg_high'] = avg_high_monthly
     data_dict['avg_low'] = avg_low_monthly
 
-    return data_dict
+    return data_dict.to_dict('records')
 
 ############################################################################################## 
 
