@@ -214,13 +214,12 @@ async def get_forecast(city: City, function_=generate_climate_url):
     for temp in low_temp[:12]:
         avg_low_monthly.append(int(temp.text.strip()))
 
-    data_dict = {}
-    data_dict['avg_high'] = avg_high_monthly
-    data_dict['avg_low'] = avg_low_monthly
+    return {
+        "Average Monthly Highs": avg_high_monthly,
+        "Average Monthly Lows": avg_low_monthly
+    }
 
-    return data_dict
-
-############################################################################################## 
+##############################################################################################
 
 # Rental Endpoint
 class Settings(BaseSettings):
