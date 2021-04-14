@@ -142,7 +142,7 @@ def get_record(card):
               'Job Url': job_url}
 
     return record
-  
+
 def get_url(position, location):
     "Generate a url based on position and location"
 
@@ -150,7 +150,7 @@ def get_url(position, location):
     url = template.format(position, location)
     return url
 
-############################################################################################## 
+##############################################################################################
 
 # # Climate Endpoint
 # def generate_climate_url(city, state) -> str:
@@ -215,7 +215,7 @@ def get_url(position, location):
 #         "Average Monthly Lows": avg_low_monthly
 #     }
 
-############################################################################################## 
+##############################################################################################
 
 # Rental Endpoint
 class Settings(BaseSettings):
@@ -330,7 +330,6 @@ async def rental_listing(
 ########################################################################################################
 
 # Schools Endpoint
-
 SCHOOLS_CSV = 'https://raw.githubusercontent.com/jiobu1/labspt15-cityspire-g-ds/main/notebooks/datasets/data/schools/schools_cleaned.csv'
 
 class School_Data():
