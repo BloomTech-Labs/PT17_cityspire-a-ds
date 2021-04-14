@@ -3,6 +3,7 @@
 from fastapi import APIRouter, HTTPException, Depends
 from pydantic import BaseModel
 import pandas as pd
+# import matplotlib.pyplot as plt
 import plotly.express as px
 from plotly.subplots import make_subplots
 import plotly.graph_objects as go
@@ -66,6 +67,7 @@ async def demographics_plot(current_city:City):
     ### Response
     JSON string to render with react-plotly.js
     """
+
     city = validate_city(current_city)
     city_data = CityData(city)
 
@@ -83,7 +85,7 @@ async def demographics_plot(current_city:City):
             'xanchor': 'center',
             'yanchor': 'top'})
     fig.show()
-    # fig.write_html("path/to/file.html")
+
     return fig.to_json()
 
 @router.post("/api/employment_graph")
@@ -98,6 +100,7 @@ async def employment_plot(current_city:City):
     ### Response
     JSON string to render with react-plotly.js
     """
+
     city = validate_city(current_city)
     city_data = CityData(city)
 
@@ -124,7 +127,7 @@ async def employment_plot(current_city:City):
         coloraxis_showscale = False,
         showlegend = False)
     fig.show()
-    # fig.write_html("path/to/file.html")
+
     return fig.to_json()
 
 @router.post("/api/crime_graph")
@@ -140,6 +143,7 @@ async def crime_plot(current_city:City):
     ### Response
     JSON string to render with react-plotly.js
     """
+
     city = validate_city(current_city)
     city_data = CityData(city)
 
@@ -176,7 +180,7 @@ async def crime_plot(current_city:City):
                          labels = property_crime_melt['property crime type']),
                          row = 2, col = 2)
     fig.show()
-    # fig.write_html("path/to/file.html")
+
     return fig.to_json()
 
 @router.post("/api/aqi_graph")
@@ -190,6 +194,7 @@ async def air_quality_plot(current_city:City):
     ### Response
     JSON string to render with react-plotly.js
     """
+
     city = validate_city(current_city)
     city_data = CityData(city)
 
@@ -211,5 +216,99 @@ async def air_quality_plot(current_city:City):
             'xanchor': 'center',
             'yanchor': 'top'})
     fig.show()
-    # fig.write_html("path/to/file.html")
+
+    return fig.to_json()
+
+POPULATION_CSV = 'https://raw.githubusercontent.com/jiobu1/labspt15-cityspire-g-ds/main/notebooks/model/population2010-2019/csv/population_cleaned.csv'
+FORECAST_CSV = 'https://raw.githubusercontent.com/jiobu1/labspt15-cityspire-g-ds/main/notebooks/model/population2010-2019/csv/population_prediction.csv'
+
+@router.post('/api/population_forecast_graph')
+async def population_forecast_graph(city:City):
+    """
+    Create visualization of historical and forecasted population
+
+    args:
+    - city: str -> The target city
+
+    Returns:
+    Visualization of population forecast
+    - 10 year of historical data
+    - projects population for 10 years
+    """
+
+    city = validate_city(city)
+    location = [city.city + ', ' + city.state]
+
+    # Historical population data
+    population = pd.read_csv(POPULATION_CSV)
+    population = population[population['City,State'].isin(location)]
+    population = population[['City,State', '2010', '2011', '2012', '2013', '2014', '2015', '2016', '2017', '2018', '2019']]
+    population_melt = population.melt(id_vars=['City,State'], var_name='ds', value_name='y')
+    population_melt['ds'] = (population_melt['ds']).astype(int)
+
+    # Predictions
+    forecast = pd.read_csv(FORECAST_CSV)
+    predictions = forecast[forecast['City,State'].isin(location)][9:]
+    predictions['year'] = (predictions['year']).astype(int)
+
+    # Graph Data
+    ax = population_melt.plot(x = 'ds', y = 'y', label='Observed', figsize= (10, 8))
+    predictions[['year', 'yhat']].plot(ax = ax, x = 'year', y = 'yhat', label = "Forecast")
+
+    # Fill to show upper and lower bounds
+    # Graph predictions including the upper and lower bounds
+    fig = go.Figure()
+
+    fig.add_trace(go.Scatter(
+        name = 'Original',
+        x = population_melt['ds'],
+        y = population_melt['y'],
+        fill = None,
+        mode = 'lines',
+        line_color = 'black',
+        showlegend = True
+    ))
+
+    fig.add_trace(go.Scatter(
+        name = 'Forecast',
+        x = predictions['year'],
+        y = predictions['yhat'],
+        fill = None,
+        mode = 'lines',
+        line_color = 'red',
+        showlegend = True
+    ))
+
+    fig.add_trace(go.Scatter(
+        name = 'Lower Bound',
+        x = predictions['year'],
+        y = predictions['yhat_lower'],
+        fill = None,
+        mode = 'lines',
+        line_color = 'gray'
+    ))
+
+    fig.add_trace(go.Scatter(
+        name = 'Upper Bound',
+        x = predictions['year'],
+        y = predictions['yhat_upper'],
+        fill='tonexty',
+        mode='lines',
+        line_color = 'gray'
+    ))
+
+    # Edit the layout
+    fig.update_layout({
+        'autosize':True,
+        'title': f'{location[0]} Population Forecast',
+        'title_x': 0.5,
+        'xaxis_title': 'Year',
+        'yaxis_title': 'Population'
+        })
+
+    fig.update_yaxes(automargin = True)
+    fig.update_xaxes(automargin = True, nticks=20)
+
+    fig.show()
+
     return fig.to_json()

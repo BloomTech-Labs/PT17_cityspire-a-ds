@@ -182,43 +182,46 @@ def generate_climate_url(city, state) -> str:
             f'{cleaned_input[0]}/{cleaned_input[1]}/united-states/')
 
 
-@router.post('/api/climate')
-async def get_forecast(city: City, function_=generate_climate_url):
-    """Scrapes climate data from usclimatedata.com and returns the average
-       highs and lows of each month.
+# @router.post('/api/climate')
+# async def get_forecast(city: City, function_=generate_climate_url):
+#     """Scrapes climate data from usclimatedata.com and returns the average
+#        highs and lows of each month.
 
-    Args:
-        city (City): Object from City class in /ml.py.
-        function_ (generate_climate_url()): Generates the climate scraper url.
+#     Args:
+#         city (City): Object from City class in /ml.py.
+#         function_ (generate_climate_url()): Generates the climate scraper url.
 
-    Returns:
-        dict: Dictionary that contains the average highs and lows for
-        each month of the year.
-    """
+#     Returns:
+#         dict: Dictionary that contains the average highs and lows for
+#         each month of the year.
+#     """
 
-    city_name = validate_city(city)
+#     city_name = validate_city(city)
 
-    response = requests.get(
-        generate_climate_url(city_name.city, city_name.state))
-    soup = BeautifulSoup(response.content, 'html.parser')
+#     response = requests.get(
+#         generate_climate_url(city_name.city, city_name.state))
+#     soup = BeautifulSoup(response.content, 'html.parser')
 
-    avg_high_monthly = []
-    high_temp = soup.find_all('td', 'high text-right')
+#     avg_high_monthly = []
+#     high_temp = soup.find_all('td', 'high text-right')
 
-    for temp in high_temp[:12]:
-        avg_high_monthly.append(int(temp.text.strip()))
+#     for temp in high_temp[:12]:
+#         avg_high_monthly.append(int(temp.text.strip()))
 
-    avg_low_monthly = []
-    low_temp = soup.find_all('td', 'low text-right')
+#     avg_low_monthly = []
+#     low_temp = soup.find_all('td', 'low text-right')
 
-    for temp in low_temp[:12]:
-        avg_low_monthly.append(int(temp.text.strip()))
+#     for temp in low_temp[:12]:
+#         avg_low_monthly.append(int(temp.text.strip()))
 
-    data_dict = {}
-    data_dict['avg_high'] = avg_high_monthly
-    data_dict['avg_low'] = avg_low_monthly
+#     data_dict = {}
+#     data_dict['avg_high'] = avg_high_monthly
+#     data_dict['avg_low'] = avg_low_monthly
 
-    return data_dict
+#     return {
+#         "Average Monthly Highs": avg_high_monthly,
+#         "Average Monthly Lows": avg_low_monthly
+#     }
 
 ############################################################################################## 
 
