@@ -207,9 +207,6 @@ def get_url(position, location):
 #     avg_low_monthly = []
 #     low_temp = soup.find_all('td', 'low text-right')
 
-#     for temp in low_temp[:12]:
-#         avg_low_monthly.append(int(temp.text.strip()))
-
 #     return {
 #         "Average Monthly Highs": avg_high_monthly,
 #         "Average Monthly Lows": avg_low_monthly
