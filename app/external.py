@@ -369,16 +369,16 @@ async def schools_listings(current_city:City, school_category):
     city = validate_city(current_city)
     school_data = School_Data(city)
 
-    school_category = ['pre-k', 'elementary', 'middle school', 'high school']
-
     # School Category
     if school_category == 'pre-k':
         school_listing = school_data.pre_k()
+        return school_listing.to_dict('records')
     elif school_category == 'elementary':
         school_listing = school_data.elementary()
+        return school_listing.to_dict('records')
     elif school_category == 'middle school':
         school_listing = school_data.elementary()
+        return school_listing.to_dict('records')
     else:
         school_listing = school_data.high_school()
-
-    return school_listing.to_dict('records')
+        return school_listing.to_dict('records')
