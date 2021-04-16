@@ -381,7 +381,7 @@ async def schools_listings(current_city:City, school_category):
     sorted dataframe as JSON string to render with react-plotly.js
     """
 
-    city = validate_city(current_city)
+    citygit  = validate_city(current_city)
     school_data = School_Data(city)
 
     school_category = ['pre-k', 'elementary', 'middle school', 'high school']
