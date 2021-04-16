@@ -62,8 +62,6 @@ async def current_weather(city:City):
         "Pressure": str(main['pressure'])+" hPa"
     }
 
-##############################################################################################
-
 # Jobs Endpoint
 ## https://github.com/israel-dryer/Indeed-Job-Scraper/blob/master/indeed-job-scraper.ipynb
 @router.post('/api/job_opportunities')
@@ -150,7 +148,6 @@ def get_url(position, location):
     url = template.format(position, location)
     return url
 
-##############################################################################################
 
 # # Climate Endpoint
 # def generate_climate_url(city, state) -> str:
@@ -214,8 +211,6 @@ def get_url(position, location):
 #         "Average Monthly Highs": avg_high_monthly,
 #         "Average Monthly Lows": avg_low_monthly
 #     }
-
-##############################################################################################
 
 # Rental Endpoint
 class Settings(BaseSettings):
@@ -326,8 +321,6 @@ async def rental_listing(
         rental_list.append(elements)
 
     return rental_list
-
-########################################################################################################
 
 # Schools Endpoint
 SCHOOLS_CSV = 'https://raw.githubusercontent.com/jiobu1/labspt15-cityspire-g-ds/main/notebooks/datasets/data/schools/schools_cleaned.csv'
