@@ -25,6 +25,7 @@ plotly = "*"
 gunicorn = "*"
 typing-extensions = "*"
 pytest = "*"
+matplotlib = "*"
 
 [requires]
 python_version = "3"
