@@ -62,8 +62,6 @@ async def current_weather(city:City):
         "Pressure": str(main['pressure'])+" hPa"
     }
 
-##############################################################################################
-
 # Jobs Endpoint
 ## https://github.com/israel-dryer/Indeed-Job-Scraper/blob/master/indeed-job-scraper.ipynb
 @router.post('/api/job_opportunities')
@@ -142,7 +140,7 @@ def get_record(card):
               'Job Url': job_url}
 
     return record
-  
+
 def get_url(position, location):
     "Generate a url based on position and location"
 
@@ -150,76 +148,66 @@ def get_url(position, location):
     url = template.format(position, location)
     return url
 
-############################################################################################## 
 
-# Climate Endpoint
-def generate_climate_url(city, state) -> str:
-    """Cleans input if necessary and formats the url to pass it to get_forecast().
+# # Climate Endpoint
+# def generate_climate_url(city, state) -> str:
+#     """Cleans input if necessary and formats the url to pass it to get_forecast().
+#     Args:
+#         city (str): Name of the city
+#         state (str): Name of the state
+#     Returns:
+#         str: Returns url for the desired location.
+#     """
 
-    Args:
-        city (str): Name of the city
-        state (str): Name of the state
+#     cleaned_input = []
+#     for string in [city, state]:
+#         string = string.lower().strip()
 
-    Returns:
-        str: Returns url for the desired location.
-    """
+#         if ' ' in string:
+#             input_str_list = list(string)
+#             for index, value in enumerate(input_str_list):
+#                 if value == ' ':
+#                     input_str_list[index] = '-'
 
-    cleaned_input = []
-    for string in [city, state]:
-        string = string.lower().strip()
+#             string = "".join(input_str_list)
 
-        if ' ' in string:
-            input_str_list = list(string)
-            for index, value in enumerate(input_str_list):
-                if value == ' ':
-                    input_str_list[index] = '-'
+#         cleaned_input.append(string)
 
-            string = "".join(input_str_list)
-
-        cleaned_input.append(string)
-
-    return (f'https://www.usclimatedata.com/climate/'
-            f'{cleaned_input[0]}/{cleaned_input[1]}/united-states/')
+#     return (f'https://www.usclimatedata.com/climate/'
+#             f'{cleaned_input[0]}/{cleaned_input[1]}/united-states/')
 
 
-@router.post('/api/climate')
-async def get_forecast(city: City, function_=generate_climate_url):
-    """Scrapes climate data from usclimatedata.com and returns the average
-       highs and lows of each month.
+# @router.post('/api/climate')
+# async def get_forecast(city: City, function_=generate_climate_url):
+#     """Scrapes climate data from usclimatedata.com and returns the average
+#        highs and lows of each month.
+#     Args:
+#         city (City): Object from City class in /ml.py.
+#         function_ (generate_climate_url()): Generates the climate scraper url.
+#     Returns:
+#         dict: Dictionary that contains the average highs and lows for
+#         each month of the year.
+#     """
 
-    Args:
-        city (City): Object from City class in /ml.py.
-        function_ (generate_climate_url()): Generates the climate scraper url.
+#     city_name = validate_city(city)
 
-    Returns:
-        dict: Dictionary that contains the average highs and lows for
-        each month of the year.
-    """
+#     response = requests.get(
+#         generate_climate_url(city_name.city, city_name.state))
+#     soup = BeautifulSoup(response.content, 'html.parser')
 
-    city_name = validate_city(city)
+#     avg_high_monthly = []
+#     high_temp = soup.find_all('td', 'high text-right')
 
-    response = requests.get(
-        generate_climate_url(city_name.city, city_name.state))
-    soup = BeautifulSoup(response.content, 'html.parser')
+#     for temp in high_temp[:12]:
+#         avg_high_monthly.append(int(temp.text.strip()))
 
-    avg_high_monthly = []
-    high_temp = soup.find_all('td', 'high text-right')
+#     avg_low_monthly = []
+#     low_temp = soup.find_all('td', 'low text-right')
 
-    for temp in high_temp[:12]:
-        avg_high_monthly.append(int(temp.text.strip()))
-
-    avg_low_monthly = []
-    low_temp = soup.find_all('td', 'low text-right')
-
-    for temp in low_temp[:12]:
-        avg_low_monthly.append(int(temp.text.strip()))
-
-    return {
-        "Average Monthly Highs": avg_high_monthly,
-        "Average Monthly Lows": avg_low_monthly
-    }
-
-##############################################################################################
+#     return {
+#         "Average Monthly Highs": avg_high_monthly,
+#         "Average Monthly Lows": avg_low_monthly
+#     }
 
 # Rental Endpoint
 class Settings(BaseSettings):
@@ -331,10 +319,7 @@ async def rental_listing(
 
     return rental_list
 
-########################################################################################################
-
 # Schools Endpoint
-
 SCHOOLS_CSV = 'https://raw.githubusercontent.com/jiobu1/labspt15-cityspire-g-ds/main/notebooks/datasets/data/schools/schools_cleaned.csv'
 
 class School_Data():
