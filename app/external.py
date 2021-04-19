@@ -259,7 +259,7 @@ async def rental_listing(
     return rental_list
 
 # Schools Endpoint
-SCHOOLS_CSV = 'https://raw.githubusercontent.com/jiobu1/labspt15-cityspire-g-ds/main/notebooks/datasets/data/schools/schools_cleaned.csv'
+SCHOOLS_CSV = 'https://raw.githubusercontent.com/jiobu1/labspt15-cityspire-g-ds/main/notebooks/datasets/data/schools/csv/final_school.csv'
 
 class School_Data():
     """
