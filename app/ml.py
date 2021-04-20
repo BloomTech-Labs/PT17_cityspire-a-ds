@@ -50,6 +50,14 @@ class CityDataFull(CityDataBase):
     nearest_string: str
 
 
+class SchoolData(BaseModel):
+    total_schools: float
+    percent_private: float
+    percent_public: float
+    percent_charter: float
+    percent_high_performing_schools: float
+
+
 class LivabilityWeights(BaseModel):
     walkability: float = 1.0
     low_rent: float = 1.0
@@ -221,6 +229,7 @@ async def get_walkability(city: City):
 
     return {"walkability": score}
 
+
 @router.post("/api/transitscore")
 async def get_transitscore(city: City):
     """Retrieve bus score for target city
@@ -378,6 +387,43 @@ async def get_population(city: City):
     city = validate_city(city)
     value = await select("Population", city)
     return {"population": value[0]}
+
+
+@router.post("/api/school_summary")
+async def get_school_summary(city:City, school_data:SchoolData):
+    """Retrieve school summary data for target city
+
+    Fetch data from DB
+
+    args:
+        city: The target city
+
+    returns:
+        Dictionary that contains the requested data, which is converted
+        by fastAPI to a json object.
+
+    """
+
+    city = validate_city(city)
+    value = await select("data.Total Schools", city)
+    return {"total schools": value[0]}
+    # v = [
+    #         [
+    #             school_data.total_schools,
+    #             school_data.percent_private,
+    #             school_data.percent_public,
+    #             school_data.percent_charter,
+    #             school_data.percent_high_performing_schools
+    #         ]
+    # ]
+    # value = await select(v, city)
+    # return {
+    #         "total schools":value[0],
+    #         "percent private": value[1],
+    #         "percent public": value[2],
+    #         "percent charter" : value[3],
+    #         "percent high performing": value[4]
+    # }
 
 
 @router.post("/api/nearest", response_model=CityRecommendations)
