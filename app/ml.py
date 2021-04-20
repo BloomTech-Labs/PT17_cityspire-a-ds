@@ -390,40 +390,26 @@ async def get_population(city: City):
 
 
 @router.post("/api/school_summary")
-async def get_school_summary(city:City, school_data:SchoolData):
-    """Retrieve school summary data for target city
+async def get_school_summary(city: City):
+    """Retrieve recommended cities for target city
 
     Fetch data from DB
 
     args:
-        city: The target city
+    - city: The target city
 
     returns:
-        Dictionary that contains the requested data, which is converted
-        by fastAPI to a json object.
-
+    - Dictionary that contains the requested data, which is converted
+    by fastAPI to a json object.
     """
 
     city = validate_city(city)
-    value = await select("data.Total Schools", city)
-    return {"total schools": value[0]}
-    # v = [
-    #         [
-    #             school_data.total_schools,
-    #             school_data.percent_private,
-    #             school_data.percent_public,
-    #             school_data.percent_charter,
-    #             school_data.percent_high_performing_schools
-    #         ]
-    # ]
-    # value = await select(v, city)
-    # return {
-    #         "total schools":value[0],
-    #         "percent private": value[1],
-    #         "percent public": value[2],
-    #         "percent charter" : value[3],
-    #         "percent high performing": value[4]
-    # }
+    value = await select_all(city)
+
+    full_data = SchoolData(city=city, **value)
+    data = {**full_data.dict()}
+
+    return data
 
 
 @router.post("/api/nearest", response_model=CityRecommendations)
