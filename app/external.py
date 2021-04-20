@@ -138,7 +138,7 @@ def get_record(card):
               'Description': job_summary,
               'Salary': salary,
               'Job Url': job_url}
-
+    
     return record
 
 def get_url(position, location):
@@ -146,6 +146,7 @@ def get_url(position, location):
 
     template = "https://www.indeed.com/jobs?q={}&l={}"
     url = template.format(position, location)
+    
     return url
 
 # Rental Endpoint
@@ -305,7 +306,7 @@ async def schools_listings(current_city:City, school_category):
     sorted dataframe as JSON string to render with react-plotly.js
     """
 
-    city = validate_city(current_city)
+    citygit  = validate_city(current_city)
     school_data = School_Data(city)
 
     # School Category
