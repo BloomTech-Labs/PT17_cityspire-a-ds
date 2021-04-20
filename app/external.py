@@ -139,7 +139,7 @@ def get_record(card):
               'Description': job_summary,
               'Salary': salary,
               'Job Url': job_url}
-    
+
     return record
 
 def get_url(position, location):
@@ -147,7 +147,7 @@ def get_url(position, location):
 
     template = "https://www.indeed.com/jobs?q={}&l={}"
     url = template.format(position, location)
-    
+
     return url
 
 # Rental Endpoint
