@@ -3,11 +3,12 @@ import os
 import datetime
 import pandas as pd
 import json
+from pickle import load
 from bs4 import BeautifulSoup
 from fastapi import APIRouter, HTTPException, Depends
 from pydantic import BaseModel, BaseSettings, SecretStr
 from app.ml import City, validate_city
-from app.state_abbr import us_state_abbrev as abbr
+from app.data.files.state_abbr import us_state_abbrev as abbr
 from dotenv import dotenv_values, load_dotenv
 import pprint
 
@@ -138,7 +139,7 @@ def get_record(card):
               'Description': job_summary,
               'Salary': salary,
               'Job Url': job_url}
-    
+
     return record
 
 def get_url(position, location):
@@ -146,7 +147,7 @@ def get_url(position, location):
 
     template = "https://www.indeed.com/jobs?q={}&l={}"
     url = template.format(position, location)
-    
+
     return url
 
 # Rental Endpoint
@@ -259,44 +260,16 @@ async def rental_listing(
 
     return rental_list
 
-# Schools Endpoint
-SCHOOLS_CSV = 'https://raw.githubusercontent.com/jiobu1/labspt15-cityspire-g-ds/main/notebooks/datasets/data/schools/csv/final_school.csv'
-
-class School_Data():
-    """
-    Locates specific school data for the city
-    Number of schools based on
-    - Ratings -> sorted, listed from highest to lowest
-    - Type -> public, private, charter
-    - Grades -> pre-k, elementary, middle, high school
-    - District -> district in city
-    """
-    def __init__(self, current_city):
-        self.current_city = current_city
-        self.dataframe = pd.read_csv(SCHOOLS_CSV)
-        self.subset = self.dataframe[self.dataframe['City'] == self.current_city.city]
-
-    def pre_k(self):
-        pre_k_subset = self.subset['Pre-Kindergarten (PK)'] == 1
-        return self.subset.loc[pre_k_subset]
-
-    def elementary(self):
-        elementary_subset = self.subset['Elementary (K-5)'] == 1
-        return self.subset.loc[elementary_subset]
-
-    def middle_school(self):
-        middle_school_subset = self.subset['Middle School (6-8)'] == 1
-        return self.subset.loc[middle_school_subset]
-
-    def high_school(self):
-        high_school_subset = self.subset['High School (9-12)'] == 1
-        return self.subset.loc[high_school_subset]
-
-
+# Schools Listing Endpoint
 @router.post('/api/schools_listing')
 async def schools_listings(current_city:City, school_category):
     """
     Listing of school information for the city
+    Locates specific pickled dictionary based on school category for the city
+    - Ratings -> sorted, listed from highest to lowest
+    - Type -> public, private, charter
+    - Grades -> pre-k, elementary, middle, high school
+    - District -> district in city
 
     ### Query Parameters
     - city
@@ -304,21 +277,23 @@ async def schools_listings(current_city:City, school_category):
 
     ### Response
     sorted dataframe as JSON string to render with react-plotly.js
+    - returns first 25 schools for speed
     """
 
-    citygit  = validate_city(current_city)
-    school_data = School_Data(city)
+    city = validate_city(current_city)
+    city_name = city.city + ', ' + city.state
 
-    # School Category
     if school_category == 'pre-k':
-        school_listing = school_data.pre_k()
-        return school_listing.to_dict('records')
+        pre_k = load(open("app/data/pickle_model/pre_k.pkl", "rb"))
+        school_listing = pre_k[city_name][:25]
     elif school_category == 'elementary':
-        school_listing = school_data.elementary()
-        return school_listing.to_dict('records')
+        elem = load(open("app/data/pickle_model/elem.pkl", "rb"))
+        school_listing = elem[city_name][:25]
     elif school_category == 'middle school':
-        school_listing = school_data.elementary()
-        return school_listing.to_dict('records')
+        middle = load(open("app/data/pickle_model/middle.pkl", "rb"))
+        school_listing = middle[city_name][:25]
     else:
-        school_listing = school_data.high_school()
-        return school_listing.to_dict('records')
+        high = load(open("app/data/pickle_model/high.pkl", "rb"))
+        school_listing = high[city_name][:25]
+
+    return school_listing.to_dict('records')
