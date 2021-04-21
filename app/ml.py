@@ -15,15 +15,12 @@ from typing import List, Optional
 
 router = APIRouter()
 
-
 class City(BaseModel):
     city: str = "New York"
     state: str = "NY"
 
-
 class CityRecommendations(BaseModel):
     recommendations: List[City]
-
 
 class CityDataBase(BaseModel):
     city: City
@@ -34,6 +31,7 @@ class CityDataBase(BaseModel):
     air_quality_index: str
     population: int
     diversity_index: float
+    percent_high_performing_schools: float
 
 
 class CityData(CityDataBase):
@@ -60,10 +58,13 @@ class SchoolData(BaseModel):
 
 class LivabilityWeights(BaseModel):
     walkability: float = 1.0
+    bikescore: float = 1.0
+    transitscore: float = 1.0
     low_rent: float = 1.0
     low_pollution: float = 1.0
     diversity: float = 1.0
     low_crime: float = 1.0
+    percent_high_performing_schools: float = 1.0
 
 
 def validate_city(
@@ -210,7 +211,7 @@ async def get_pollution(city: City):
 
 @router.post("/api/walkability")
 async def get_walkability(city: City):
-    """Retrieve walkscore, bus score, and bike score for target city
+    """Retrieve walkscore for target city
 
     args:
         city: The target city
@@ -312,27 +313,38 @@ async def get_livability(city: City, weights: LivabilityWeights = None):
     v = [[values[0] * -1, values[1], values[2] * -1]]
     scaled = s.transform(v)[0]
     walkscore = await get_walkscore(city.city, city.state)
+    bikescore = await get_walkscore(city.city, city.state)
+    transitscore = await get_walkscore(city.city, city.state)
     diversity_index = await select("Diversity Index", city)
+    percent_high_performing_schools = await select("Percent Performing Above Average or Better", city)
 
-    rescaled = [walkscore[0]]
-    rescaled.append(round(diversity_index[0]) * 100)
+    rescaled = [walkscore[0], walkscore[1], walkscore[2]]
+    rescaled.append(round(diversity_index[0]))
+    rescaled.append(percent_high_performing_schools[0])
+
     for score in scaled:
         rescaled.append(score * 100)
-    # breakpoint()
+
     if weights is None:
-        return {"livability": round(sum(rescaled) / 5)}
+        print(f"livability: {round(sum(rescaled) /len(rescaled))}")
+        return {"livability": round(sum(rescaled) /len(rescaled))}
     else:
         weighted = [
             rescaled[0] * weights.walkability,
-            rescaled[1] * weights.diversity,
-            rescaled[2] * weights.low_rent,
-            rescaled[3] * weights.low_pollution,
-            rescaled[4] * weights.low_crime,
+            rescaled[1] * weights.bikescore,
+            rescaled[2] * weights.transitscore,
+            rescaled[3] * weights.diversity,
+            rescaled[4] * weights.percent_high_performing_schools,
+            rescaled[5] * weights.low_rent,
+            rescaled[6] * weights.low_pollution,
+            rescaled[7] * weights.low_crime,
         ]
 
         sum_ = sum(weighted)
         divisor = sum(weights.dict().values())
-
+        print(sum_)
+        print(divisor)
+        print(f"livability: {round(sum_ / divisor)}")
         return {"livability": round(sum_ / divisor)}
 
 
@@ -362,12 +374,14 @@ async def get_livability_score(city: City, city_data: CityDataFull):
     ]
     scaled = s.transform(v)[0]
     walkscore = await get_walkscore(city.city, city.state)
+    bikescore = await get_walkscore(city.city, city.state)
+    transitscore = await get_walkscore(city.city, city.state)
 
-    rescaled = [walkscore[0], city_data.diversity_index]
+    rescaled = [walkscore[0], walkscore[2], walkscore[1], city_data.diversity_index, city_data.percent_high_performing_schools]
     for score in scaled:
         rescaled.append(score * 100)
 
-    return {"livability": round(sum(rescaled) / 5)}
+    return {"livability": round(sum(rescaled) / len(rescaled))}
 
 
 @router.post("/api/population")

@@ -101,8 +101,7 @@ async def select_all(city):
         data["Percent Public"].as_("percent_public"),
         data["Percent Charter"].as_("percent_charter"),
         di_fn(data["Diversity Index"]).as_("diversity_index"),
-        di_fn(data["Percent Performing Above Average or Better"]).as_("percent_high_performing_schools"),
-    )
+        di_fn(data["Percent Performing Above Average or Better"]).as_("percent_high_performing_schools"))
 
     q = (
         Query.from_(data)
