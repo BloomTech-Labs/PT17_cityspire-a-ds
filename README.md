@@ -410,6 +410,10 @@ Crime Rate per 1,000 inhabitants: This represents the number of Index offenses p
 513 (Index offenses) ÷ 8,280 (population) = .061957 x 1,000 = 62.0 (crime per 1,000 inhabitants)\
 https://www.njsp.org/info/ucr2000/pdf/calc_ucr2000.pdf
 
+#### Walkability, Bikeability, Public Transportaion
+To calculate walkability, bikeability, and public transportaion columns, we used the scores from the walkscore api
+![Walkscore Methodology](https://www.walkscore.com/methodology.shtml)
+
 
 ### Datasets:
 (https://github.com/Lambda-School-Labs/PT17_cityspire-a-ds/tree/main/notebooks/datasets/datasets_to_merge) \
