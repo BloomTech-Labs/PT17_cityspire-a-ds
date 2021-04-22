@@ -466,7 +466,9 @@ https://github.com/Lambda-School-Labs/PT17_cityspire-a-ds/blob/main/Pipfile
 |                  [ <img src="https://static.licdn.com/sc/h/al2o9zrvru7aqj8e1x2rzsrca" width="15"> ](https://www.linkedin.com/in/jishaobukwelu/)                  |                 [ <img src="https://static.licdn.com/sc/h/al2o9zrvru7aqj8e1x2rzsrca" width="15"> ](https://www.linkedin.com/in/todddifronzo/)                 |                [ <img src="https://static.licdn.com/sc/h/al2o9zrvru7aqj8e1x2rzsrca" width="15"> ](https://www.linkedin.com/in/lukemelto/)                |                
 
 <br>
-<br>
+
+## Version 1 Demo
+[![CitySpire API Demo](http://img.youtube.com/vi/WSLJawDw1aQ/0.jpg)](https://www.youtube.com/watch?v=WSLJawDw1aQ "CitySpire API Demo")
 
 ## Past Contributors
 |                                                          [Jisha Obukwelu](https://github.com/jiobu1)                                                          |                                                       [Erik Seguinte](https://github.com/ErikSeguinte)                                                        |                                                      [dataabyss](https://github.com/dataabyss)                                                       |                                                      [Keino Baird](https://github.com/kbee181756)                                                       |
@@ -476,5 +478,6 @@ https://github.com/Lambda-School-Labs/PT17_cityspire-a-ds/blob/main/Pipfile
 |                  [ <img src="https://static.licdn.com/sc/h/al2o9zrvru7aqj8e1x2rzsrca" width="15"> ](https://www.linkedin.com/in/jishaobukwelu/)                  |                 [ <img src="https://static.licdn.com/sc/h/al2o9zrvru7aqj8e1x2rzsrca" width="15"> ](https://www.linkedin.com/in/erik-seguinte/)                 |                [ <img src="https://static.licdn.com/sc/h/al2o9zrvru7aqj8e1x2rzsrca" width="15"> ](https://www.linkedin.com/)                |                [ <img src="https://static.licdn.com/sc/h/al2o9zrvru7aqj8e1x2rzsrca" width="15"> ](https://www.linkedin.com/in/keino-baird-7a54921b/)                |
 
 <br>
-<br>
+
+
 
