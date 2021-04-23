@@ -49,8 +49,6 @@ def test_weather_data_validates_json_resonse_schema():
     # what is described in schema.
     validate(instance=resp_body, schema=weather_schema)
 
-##########################################################################################################
-
 # Job Opportunities Test
 def test_job_opportunities_check_status_code_equals_200():
     data = {
@@ -94,8 +92,6 @@ def test_job_opportunities_validates_json_resonse_schema():
     # Validate will raise exception if given json is not
     # what is described in schema.
     validate(instance=resp_body, schema=job_opportunities_schema)
-
-##########################################################################################################
 
 # Rental Listing Test
 def test_rental_listing_check_status_code_equals_200():
@@ -149,8 +145,6 @@ def test_rental_listing_validates_json_response_schema():
     # Validate will raise exception if given json is not
     # what is described in schema.
     validate(instance=resp_body, schema=rental_listings_schema)
-
-##########################################################################################################
 
 # School Listings Test
 def test_school_listings_check_status_code_equals_200():
