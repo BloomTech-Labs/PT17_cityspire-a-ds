@@ -19,8 +19,10 @@ class City(BaseModel):
     city: str = "New York"
     state: str = "NY"
 
+
 class CityRecommendations(BaseModel):
     recommendations: List[City]
+
 
 class CityDataBase(BaseModel):
     city: City

@@ -61,6 +61,7 @@ async def current_weather(city:City):
         "Pressure": str(main['pressure'])+" hPa"
     }
 
+
 # Jobs Endpoint
 ## https://github.com/israel-dryer/Indeed-Job-Scraper/blob/master/indeed-job-scraper.ipynb
 @router.post('/api/job_opportunities')
@@ -172,6 +173,7 @@ def get_url(position, location):
 
     return url
 
+
 # Rental Endpoint
 class Settings(BaseSettings):
 
@@ -280,6 +282,7 @@ async def rental_listing(
         rental_list.append(elements)
 
     return rental_list
+
 
 # Schools Listing Endpoint
 @router.post('/api/schools_listing')

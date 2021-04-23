@@ -58,6 +58,7 @@ class CityData():
         self.air_quality_index = ['Days with AQI', 'Good Days', 'Moderate Days','Unhealthy for Sensitive Groups Days', 'Unhealthy Days','Very Unhealthy Days', 'Hazardous Days', 'Max AQI', '90th Percentile AQI', 'Median AQI', 'Days CO', 'Days NO2', 'Days Ozone', 'Days SO2', 'Days PM2.5', 'Days PM10']
         return self.air_quality_index
 
+
 @router.post("/api/demographics_graph")
 async def demographics_plot(current_city:City):
     """
@@ -89,6 +90,7 @@ async def demographics_plot(current_city:City):
     fig.show()
 
     return fig.to_json()
+
 
 @router.post("/api/employment_graph")
 async def employment_plot(current_city:City):
@@ -131,6 +133,7 @@ async def employment_plot(current_city:City):
     fig.show()
 
     return fig.to_json()
+
 
 @router.post("/api/crime_graph")
 async def crime_plot(current_city:City):
@@ -185,6 +188,7 @@ async def crime_plot(current_city:City):
 
     return fig.to_json()
 
+
 @router.post("/api/aqi_graph")
 async def air_quality_plot(current_city:City):
     """
@@ -220,6 +224,7 @@ async def air_quality_plot(current_city:City):
     fig.show()
 
     return fig.to_json()
+
 
 POPULATION_CSV = 'https://raw.githubusercontent.com/jiobu1/labspt15-cityspire-g-ds/main/notebooks/model/population2010-2019/csv/population_cleaned.csv'
 FORECAST_CSV = 'https://raw.githubusercontent.com/jiobu1/labspt15-cityspire-g-ds/main/notebooks/model/population2010-2019/csv/population_prediction.csv'
@@ -314,7 +319,6 @@ async def population_forecast_graph(city:City):
     fig.show()
 
     return fig.to_json()
-
 
 
 FMR_0 = 'https://raw.githubusercontent.com/jiobu1/labspt15-cityspire-g-ds/main/notebooks/model/rental/csv/fmr0.csv'

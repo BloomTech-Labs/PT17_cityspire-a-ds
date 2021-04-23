@@ -32,6 +32,7 @@ async def get_url():
     url_without_password = repr(database.url)
     return {"database_url": url_without_password}
 
+
 @router.get('/all_cities')
 async def all_cities():
     """

@@ -7,7 +7,6 @@ from app import db, ml, viz, external
 description = """
 MISSION: Be a one-stop resource for users to receive the most accurate city information.
 
-
 CITYSPIRE APP:
 An app that analyzes data from cities such as populations, cost of living,\n
 rental rates, crime rates, park (walk score), and many other social \n
