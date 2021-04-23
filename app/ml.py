@@ -363,7 +363,7 @@ async def get_livability_score(city: City, city_data: CityDataFull):
             by fastAPI to a json object.
     """
 
-    with open("app/livability_scaler.pkl", "rb") as f:
+    with open("app/data/pickle_model/livability_scaler.pkl", "rb") as f:
         s = load(f)
     v = [
         [
