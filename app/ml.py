@@ -314,10 +314,14 @@ async def get_livability(city: City, weights: LivabilityWeights = None):
     v = [[values[0] * -1, values[1], values[2] * -1]]
     scaled = s.transform(v)[0]
     walkscore = await get_walkscore(city.city, city.state)
+    bikescore = await get_walkscore(city.city, city.state)
+    transitscore = await get_walkscore(city.city, city.state)
     diversity_index = await select("Diversity Index", city)
     percent_high_performing_schools = await select("Percent Performing Above Average or Better", city)
 
-    rescaled = [walkscore[0], walkscore[1], walkscore[2]]
+    rescaled = [walkscore[0]]
+    rescaled.append(bikescore[2])
+    rescaled.append(transitscore[1])
     rescaled.append(round(diversity_index[0]))
     rescaled.append(percent_high_performing_schools[0])
 
@@ -370,8 +374,10 @@ async def get_livability_score(city: City, city_data: CityDataFull):
     ]
     scaled = s.transform(v)[0]
     walkscore = await get_walkscore(city.city, city.state)
+    bikescore = await get_walkscore(city.city, city.state)
+    transitscore = await get_walkscore(city.city, city.state)
 
-    rescaled = [walkscore[0], walkscore[2], walkscore[1], city_data.diversity_index, city_data.percent_high_performing_schools]
+    rescaled = [walkscore[0], bikescore[2], transitscore[1], city_data.diversity_index, city_data.percent_high_performing_schools]
     for score in scaled:
         rescaled.append(score * 100)
 
