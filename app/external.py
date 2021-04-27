@@ -32,11 +32,10 @@ async def current_weather(city:City):
     - pressure
 
     args:
-        city: The target city
+    - city: The target city
 
     returns:
-        Dictionary that contains the requested data, which is converted
-        by fastAPI to a json object.
+    - Dictionary that contains the requested data, which is converted by fastAPI to a json object.
     """
 
     app_id = weather_api
@@ -63,7 +62,7 @@ async def current_weather(city:City):
 
 
 # Jobs Endpoint
-## https://github.com/israel-dryer/Indeed-Job-Scraper/blob/master/indeed-job-scraper.ipynb
+# https://github.com/israel-dryer/Indeed-Job-Scraper/blob/master/indeed-job-scraper.ipynb
 @router.post('/api/job_opportunities')
 async def job_opportunities(position, city:City):
     """Returns jobs opportunities from indeed.com
@@ -79,15 +78,14 @@ async def job_opportunities(position, city:City):
     - Job Url
 
     args:
-        - position: desired job opportunity
-        - city: target city
+    - position: desired job opportunity
+    - city: target city
 
     returns:
-        Dictionary that contains the requested data, which is converted
-        by fastAPI to a json object.
+    - Dictionary that contains the requested data, which is converted by fastAPI to a json object.
     """
 
-    # Run the main program reouting
+    # Run the main program routing
     records = []  # creating the record list
 
     city_name = validate_city(city)
@@ -174,7 +172,7 @@ def get_url(position, location):
     return url
 
 
-# Rental Endpoint
+# Rental Listings Endpoint
 class Settings(BaseSettings):
 
     RENTAL_API_KEY: SecretStr
@@ -207,8 +205,7 @@ async def rental_listing(
 
 
     returns:
-        Dictionary that contains the requested data, which is converted
-        by fastAPI to a json object.
+    - Dictionary that contains the requested data, which is converted by fastAPI to a json object.
     """
 
     city = validate_city(city)
@@ -299,8 +296,8 @@ async def schools_listings(current_city:City, school_category):
     - city
     - school category -> pre-k, elementary, middle school, high school
 
-    returns
-    sorted dataframe as JSON string to render with react-plotly.js
+    returns:
+    - sorted dataframe as JSON string to render with react-plotly.js
     - returns first 25 schools for speed
     """
 
