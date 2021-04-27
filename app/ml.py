@@ -328,7 +328,6 @@ async def get_livability(city: City, weights: LivabilityWeights = None):
         rescaled.append(score * 100)
 
     if weights is None:
-        print(f"livability: {round(sum(rescaled) /len(rescaled))}")
         return {"livability": round(sum(rescaled) /len(rescaled))}
     else:
         weighted = [
@@ -344,9 +343,7 @@ async def get_livability(city: City, weights: LivabilityWeights = None):
 
         sum_ = sum(weighted)
         divisor = sum(weights.dict().values())
-        print(sum_)
-        print(divisor)
-        print(f"livability: {round(sum_ / divisor)}")
+
         return {"livability": round(sum_ / divisor)}
 
 
