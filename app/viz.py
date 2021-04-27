@@ -31,32 +31,25 @@ class CityData():
         self.subset = self.dataframe[self.dataframe['City'] == self.current_city.city]
 
     def demographics(self):
-        self.demographics = ['Hispanic', 'White', 'Black', 'Native', 'Asian', 'Pacific']
-        return self.demographics
+        return ['Hispanic', 'White', 'Black', 'Native', 'Asian', 'Pacific']
 
     def industry(self):
-        self.industry = ['PrivateWork', 'PublicWork', 'SelfEmployed', 'FamilyWork']
-        return self.industry
+        return ['PrivateWork', 'PublicWork', 'SelfEmployed', 'FamilyWork']
 
     def employment(self):
-        self.employment= ['Professional', 'Service', 'Office', 'Construction',	'Production']
-        return self.employment
+        return ['Professional', 'Service', 'Office', 'Construction',	'Production']
 
     def crime(self):
-        self.crime = ['Violent crime', 'Property crime', 'Arson']
-        return self.crime
+        return ['Violent crime', 'Property crime', 'Arson']
 
     def violent_crime(self):
-        self.violent_crime= ['Murder and nonnegligent manslaughter','Rape', 'Robbery', 'Aggravated assault']
-        return self.violent_crime
+        return ['Murder and nonnegligent manslaughter','Rape', 'Robbery', 'Aggravated assault']
 
     def property_crime(self):
-        self.property_crime = ['Burglary','Larceny- theft', 'Motor vehicle theft']
-        return self.property_crime
+        return ['Burglary','Larceny- theft', 'Motor vehicle theft']
 
     def air_quality_index(self):
-        self.air_quality_index = ['Days with AQI', 'Good Days', 'Moderate Days','Unhealthy for Sensitive Groups Days', 'Unhealthy Days','Very Unhealthy Days', 'Hazardous Days', 'Max AQI', '90th Percentile AQI', 'Median AQI', 'Days CO', 'Days NO2', 'Days Ozone', 'Days SO2', 'Days PM2.5', 'Days PM10']
-        return self.air_quality_index
+        return ['Days with AQI', 'Good Days', 'Moderate Days','Unhealthy for Sensitive Groups Days', 'Unhealthy Days','Very Unhealthy Days', 'Hazardous Days', 'Max AQI', '90th Percentile AQI', 'Median AQI', 'Days CO', 'Days NO2', 'Days Ozone', 'Days SO2', 'Days PM2.5', 'Days PM10']
 
 
 @router.post("/api/demographics_graph")
