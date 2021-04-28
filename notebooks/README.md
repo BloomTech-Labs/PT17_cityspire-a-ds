@@ -1,6 +1,5 @@
 ## Understanding CitySpire A DS Repository
 
-
 - listed below are the are the endpoints created
 - correstponding folders for creating these endpoints are listed below
 
@@ -45,11 +44,11 @@
 - all three scores are scraped from walkability website -> walkscore.com
 
 @router.post("/api/livability")
-- notebooks/datasets/model/livability
+- notebooks/model/livability
 - create a pickle that scales numbers that are not from a 0-100 scale, rental data, number of good days from pollution data, crime rate per 1000 residents.
 
 @router.post("/api/population")
-- notebooks/datasets/model/livability
+- notebooks/model/livability
 - population data is gleaned from 2020 crime data
 
 @router.post("/api/school_summary")
@@ -57,14 +56,29 @@
 - create summary from web scraped school data
 
 @router.post("/api/nearest", response_model=CityRecommendations)
-- notebooks/datasets/data/model/nearest_neighbor
+- notebooks/model/nearest_neighbor
 - during labs1 and 2, utilize numeric columns to find the 5 closest cities.
 
 ### Viz.py
+
 @router.post("/api/demographics_graph")
+- notebooks/visuals
+- notebooks/datasets/data/census_data
+
 @router.post("/api/employment_graph")
+- notebooks/visuals
+- notebooks/datasets/data/census_data
+
 @router.post("/api/crime_graph")
+- notebooks/visuals
+- notebooks/datasets/data/crime_data
+
 @router.post("/api/aqi_graph")
-- notebooks/datasets/visuals
+- notebooks/visuals
+- notebooks/datasets/data/pollution
+
 @router.post('/api/population_forecast_graph')
+- notebooks/model/population2010_2019
+
 @router.post('/api/rental_forecast_graph')
+- notebooks/model/rental
