@@ -148,6 +148,7 @@ async def get_coordinates(city: City):
         Dictionary that contains the requested data, which is converted
         by fastAPI to a json object.
     """
+
     city = validate_city(city)
     value = await select(["lat", "lon"], city)
     return {"latitude": value[0], "longitude": value[1]}
@@ -166,6 +167,7 @@ async def get_crime(city: City):
         Dictionary that contains the requested data, which is converted
         by fastAPI to a json object.
     """
+
     city = validate_city(city)
     data = Table("data")
     value = await select("Crime Rating", city)
@@ -185,6 +187,7 @@ async def get_rental_price(city: City):
         Dictionary that contains the requested data, which is converted
         by fastAPI to a json object.
     """
+
     city = validate_city(city)
     value = await select("Rent", city)
 
@@ -204,6 +207,7 @@ async def get_pollution(city: City):
         Dictionary that contains the requested data, which is converted
         by fastAPI to a json object.
     """
+
     city = validate_city(city)
     value = await select("Air Quality Index", city)
     return {"air_quality_index": value[0]}
@@ -220,6 +224,7 @@ async def get_walkability(city: City):
         Dictionary that contains the requested data, which is converted
         by fastAPI to a json object.
     """
+
     city = validate_city(city)
     try:
         score = (await get_walkscore(**city.dict()))[0]
@@ -242,6 +247,7 @@ async def get_transitscore(city: City):
         Dictionary that contains the requested data, which is converted
         by fastAPI to a json object.
     """
+
     city = validate_city(city)
     try:
         score = (await get_walkscore(**city.dict()))[1]
@@ -264,6 +270,7 @@ async def get_bikescore(city: City):
         Dictionary that contains the requested data, which is converted
         by fastAPI to a json object.
     """
+
     city = validate_city(city)
     try:
         score = (await get_walkscore(**city.dict()))[2]
@@ -306,6 +313,7 @@ async def get_livability(city: City, weights: LivabilityWeights = None):
         Dictionary that contains the requested data, which is converted
         by fastAPI to a json object.
     """
+
     city = validate_city(city)
     values = await select(["Rent", "Good Days", "Crime Rate per 1000"], city)
     with open("app/data/pickle_model/livability_scaler.pkl", "rb") as f:
