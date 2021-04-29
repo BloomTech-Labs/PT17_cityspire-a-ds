@@ -424,7 +424,7 @@ def rental_forecast_graph(city:City, bed):
     # Edit the layout
     plot.update_layout({
         'autosize':True,
-        'title': f'{location[0]} Rental Forecast',
+        'title': f'{location[0]} Rental Forecast for {bed} Bedroom Apartment',
         'title_x': 0.5,
         'xaxis_title': 'Month',
         'yaxis_title': 'Rental_Projection'
