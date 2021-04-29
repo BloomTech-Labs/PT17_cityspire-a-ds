@@ -31,32 +31,26 @@ class CityData():
         self.subset = self.dataframe[self.dataframe['City'] == self.current_city.city]
 
     def demographics(self):
-        self.demographics = ['Hispanic', 'White', 'Black', 'Native', 'Asian', 'Pacific']
-        return self.demographics
+        return ['Hispanic', 'White', 'Black', 'Native', 'Asian', 'Pacific']
 
     def industry(self):
-        self.industry = ['PrivateWork', 'PublicWork', 'SelfEmployed', 'FamilyWork']
-        return self.industry
+        return ['PrivateWork', 'PublicWork', 'SelfEmployed', 'FamilyWork']
 
     def employment(self):
-        self.employment= ['Professional', 'Service', 'Office', 'Construction',	'Production']
-        return self.employment
+        return ['Professional', 'Service', 'Office', 'Construction',	'Production']
 
     def crime(self):
-        self.crime = ['Violent crime', 'Property crime', 'Arson']
-        return self.crime
+        return ['Violent crime', 'Property crime', 'Arson']
 
     def violent_crime(self):
-        self.violent_crime= ['Murder and nonnegligent manslaughter','Rape', 'Robbery', 'Aggravated assault']
-        return self.violent_crime
+        return ['Murder and nonnegligent manslaughter','Rape', 'Robbery', 'Aggravated assault']
 
     def property_crime(self):
-        self.property_crime = ['Burglary','Larceny- theft', 'Motor vehicle theft']
-        return self.property_crime
+        return ['Burglary','Larceny- theft', 'Motor vehicle theft']
 
     def air_quality_index(self):
-        self.air_quality_index = ['Days with AQI', 'Good Days', 'Moderate Days','Unhealthy for Sensitive Groups Days', 'Unhealthy Days','Very Unhealthy Days', 'Hazardous Days', 'Max AQI', '90th Percentile AQI', 'Median AQI', 'Days CO', 'Days NO2', 'Days Ozone', 'Days SO2', 'Days PM2.5', 'Days PM10']
-        return self.air_quality_index
+        return ['Days with AQI', 'Good Days', 'Moderate Days','Unhealthy for Sensitive Groups Days', 'Unhealthy Days','Very Unhealthy Days', 'Hazardous Days', 'Max AQI', '90th Percentile AQI', 'Median AQI', 'Days CO', 'Days NO2', 'Days Ozone', 'Days SO2', 'Days PM2.5', 'Days PM10']
+
 
 @router.post("/api/demographics_graph")
 async def demographics_plot(current_city:City):
@@ -89,6 +83,7 @@ async def demographics_plot(current_city:City):
     fig.show()
 
     return fig.to_json()
+
 
 @router.post("/api/employment_graph")
 async def employment_plot(current_city:City):
@@ -131,6 +126,7 @@ async def employment_plot(current_city:City):
     fig.show()
 
     return fig.to_json()
+
 
 @router.post("/api/crime_graph")
 async def crime_plot(current_city:City):
@@ -185,6 +181,7 @@ async def crime_plot(current_city:City):
 
     return fig.to_json()
 
+
 @router.post("/api/aqi_graph")
 async def air_quality_plot(current_city:City):
     """
@@ -220,6 +217,7 @@ async def air_quality_plot(current_city:City):
     fig.show()
 
     return fig.to_json()
+
 
 POPULATION_CSV = 'https://raw.githubusercontent.com/jiobu1/labspt15-cityspire-g-ds/main/notebooks/model/population2010-2019/csv/population_cleaned.csv'
 FORECAST_CSV = 'https://raw.githubusercontent.com/jiobu1/labspt15-cityspire-g-ds/main/notebooks/model/population2010-2019/csv/population_prediction.csv'
@@ -314,7 +312,6 @@ async def population_forecast_graph(city:City):
     fig.show()
 
     return fig.to_json()
-
 
 
 FMR_0 = 'https://raw.githubusercontent.com/jiobu1/labspt15-cityspire-g-ds/main/notebooks/model/rental/csv/fmr0.csv'

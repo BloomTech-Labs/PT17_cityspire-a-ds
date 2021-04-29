@@ -5,7 +5,7 @@ from jsonschema import validate
 from jsonschema import Draft6Validator
 
 #All Cities Test
-def test_temperature_check_status_code_equals_200():
+def test_all_cities_check_status_code_equals_200():
 
     response = requests.get("http://127.0.0.1:8000/all_cities")
     assert response.status_code == 200
@@ -17,7 +17,7 @@ all_cities_schema = {
 
 }
 
-def test_weather_data_validates_json_resonse_schema():
+def test_all_cities_validates_json_resonse_schema():
 
     response = requests.get("http://127.0.0.1:8000/all_cities")
 

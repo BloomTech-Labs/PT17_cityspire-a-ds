@@ -10,11 +10,9 @@ from pydantic import BaseModel, BaseSettings, SecretStr
 from app.ml import City, validate_city
 from app.data.files.state_abbr import us_state_abbrev as abbr
 from dotenv import dotenv_values, load_dotenv
-import pprint
 
 router = APIRouter()
 load_dotenv()
-
 
 weather_api = os.getenv("WEATHER_API_KEY")
 
@@ -34,13 +32,12 @@ async def current_weather(city:City):
     - pressure
 
     args:
-        city: The target city
+    - city: The target city
 
     returns:
-        Dictionary that contains the requested data, which is converted
-        by fastAPI to a json object.
-
+    - Dictionary that contains the requested data, which is converted by fastAPI to a json object.
     """
+
     app_id = weather_api
     location = validate_city(city) # {city: "New York", state: "NY" }
     city_name = location.city + "," + location.state
@@ -63,8 +60,9 @@ async def current_weather(city:City):
         "Pressure": str(main['pressure'])+" hPa"
     }
 
+
 # Jobs Endpoint
-## https://github.com/israel-dryer/Indeed-Job-Scraper/blob/master/indeed-job-scraper.ipynb
+# https://github.com/israel-dryer/Indeed-Job-Scraper/blob/master/indeed-job-scraper.ipynb
 @router.post('/api/job_opportunities')
 async def job_opportunities(position, city:City):
     """Returns jobs opportunities from indeed.com
@@ -80,15 +78,14 @@ async def job_opportunities(position, city:City):
     - Job Url
 
     args:
-        - position: desired job opportunity
-        - city: target city
+    - position: desired job opportunity
+    - city: target city
 
     returns:
-        Dictionary that contains the requested data, which is converted
-        by fastAPI to a json object.
-
+    - Dictionary that contains the requested data, which is converted by fastAPI to a json object.
     """
-    # Run the main program reouting
+
+    # Run the main program routing
     records = []  # creating the record list
 
     city_name = validate_city(city)
@@ -116,6 +113,7 @@ async def job_opportunities(position, city:City):
 
 def get_record(card):
     """Extract job date from a single record"""
+
     atag = card.h2.a
     try:
         job_title = atag.get('title')
@@ -173,7 +171,8 @@ def get_url(position, location):
 
     return url
 
-# Rental Endpoint
+
+# Rental Listings Endpoint
 class Settings(BaseSettings):
 
     RENTAL_API_KEY: SecretStr
@@ -194,7 +193,6 @@ async def rental_listing(
             baths_min: int=1,
             prop_type: str="apartment",
             limit: int=5):
-
     """
     args:
     - api_key
@@ -207,8 +205,7 @@ async def rental_listing(
 
 
     returns:
-        Dictionary that contains the requested data, which is converted
-        by fastAPI to a json object.
+    - Dictionary that contains the requested data, which is converted by fastAPI to a json object.
     """
 
     city = validate_city(city)
@@ -283,6 +280,7 @@ async def rental_listing(
 
     return rental_list
 
+
 # Schools Listing Endpoint
 @router.post('/api/schools_listing')
 async def schools_listings(current_city:City, school_category):
@@ -294,12 +292,12 @@ async def schools_listings(current_city:City, school_category):
     - Grades -> pre-k, elementary, middle, high school
     - District -> district in city
 
-    ### Query Parameters
+    args:
     - city
     - school category -> pre-k, elementary, middle school, high school
 
-    ### Response
-    sorted dataframe as JSON string to render with react-plotly.js
+    returns:
+    - sorted dataframe as JSON string to render with react-plotly.js
     - returns first 25 schools for speed
     """
 

@@ -19,8 +19,10 @@ class City(BaseModel):
     city: str = "New York"
     state: str = "NY"
 
+
 class CityRecommendations(BaseModel):
     recommendations: List[City]
+
 
 class CityDataBase(BaseModel):
     city: City
@@ -167,7 +169,6 @@ async def get_crime(city: City):
         by fastAPI to a json object.
     """
     city = validate_city(city)
-    data = Table("data")
     value = await select("Crime Rating", city)
     return {"crime": value[0]}
 
@@ -318,7 +319,9 @@ async def get_livability(city: City, weights: LivabilityWeights = None):
     diversity_index = await select("Diversity Index", city)
     percent_high_performing_schools = await select("Percent Performing Above Average or Better", city)
 
-    rescaled = [walkscore[0], walkscore[1], walkscore[2]]
+    rescaled = [walkscore[0]]
+    rescaled.append(bikescore[2])
+    rescaled.append(transitscore[1])
     rescaled.append(round(diversity_index[0]))
     rescaled.append(percent_high_performing_schools[0])
 
@@ -326,7 +329,6 @@ async def get_livability(city: City, weights: LivabilityWeights = None):
         rescaled.append(score * 100)
 
     if weights is None:
-        print(f"livability: {round(sum(rescaled) /len(rescaled))}")
         return {"livability": round(sum(rescaled) /len(rescaled))}
     else:
         weighted = [
@@ -342,9 +344,7 @@ async def get_livability(city: City, weights: LivabilityWeights = None):
 
         sum_ = sum(weighted)
         divisor = sum(weights.dict().values())
-        print(sum_)
-        print(divisor)
-        print(f"livability: {round(sum_ / divisor)}")
+
         return {"livability": round(sum_ / divisor)}
 
 
@@ -377,7 +377,7 @@ async def get_livability_score(city: City, city_data: CityDataFull):
     bikescore = await get_walkscore(city.city, city.state)
     transitscore = await get_walkscore(city.city, city.state)
 
-    rescaled = [walkscore[0], walkscore[2], walkscore[1], city_data.diversity_index, city_data.percent_high_performing_schools]
+    rescaled = [walkscore[0], bikescore[2], transitscore[1], city_data.diversity_index, city_data.percent_high_performing_schools]
     for score in scaled:
         rescaled.append(score * 100)
 
