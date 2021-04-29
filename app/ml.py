@@ -191,7 +191,6 @@ async def get_rental_price(city: City):
 
     city = validate_city(city)
     value = await select("Rent", city)
-
     return {"rental_price": value[0]}
 
 
