@@ -57,11 +57,11 @@ async def demographics_plot(current_city:City):
     """
     Visualize demographic information for city
 
-    ### Query Parameters
+    args:
     - city
 
-    ### Response
-    JSON string to render with react-plotly.js
+    returns:
+    - JSON string to render with react-plotly.js
     """
 
     city = validate_city(current_city)
@@ -91,11 +91,11 @@ async def employment_plot(current_city:City):
     Visualize employment information for city
     - see industry breakdown and employment type
 
-    ### Query Parameters
+    args:
     - city
 
-    ### Response
-    JSON string to render with react-plotly.js
+    returns:
+    - JSON string to render with react-plotly.js
     """
 
     city = validate_city(current_city)
@@ -135,11 +135,11 @@ async def crime_plot(current_city:City):
     - see overall crime breakdown
     - visualize breakdown of violent crime and property crime
 
-    ### Query Parameters
+    args:
     - city
 
-    ### Response
-    JSON string to render with react-plotly.js
+    returns:
+    - JSON string to render with react-plotly.js
     """
 
     city = validate_city(current_city)
@@ -187,11 +187,11 @@ async def air_quality_plot(current_city:City):
     """
     Visualize air quality information for city
 
-    ### Query Parameters
+    args:
     - city
 
-    ### Response
-    JSON string to render with react-plotly.js
+    returns:
+    - JSON string to render with react-plotly.js
     """
 
     city = validate_city(current_city)
@@ -230,7 +230,7 @@ async def population_forecast_graph(city:City):
     args:
     - city: str -> The target city
 
-    Returns:
+    returns:
     Visualization of population forecast
     - 10 year of historical data
     - projects population for 10 years
@@ -336,7 +336,7 @@ def rental_forecast_graph(city:City, bed):
     - city: str -> The target city
     - beds: int -> number of beds (0,1,2,3)
 
-    Returns:
+    returns:
     Visualization of Rental forecast
     - 5 year of historical data
     - 10 years forecasted data
