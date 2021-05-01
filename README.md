@@ -10,6 +10,8 @@ and economic factors that are important in deciding where someone would like to 
 This app will present such important data in an intuitive and easy to understand interface.
 Use data to find a place right for you to live.
 
+## DEMO
+[![CitySpire 2.0 API Demo](http://img.youtube.com/vi/Rz84nk3_W54/0.jpg)](https://www.youtube.com/watch?v=Rz84nk3_W54 "CitySpire 2.0 API Demo")
 
 ## LOCAL TESTING
 
