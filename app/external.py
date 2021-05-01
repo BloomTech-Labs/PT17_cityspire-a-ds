@@ -145,10 +145,7 @@ def get_record(card):
     except AttributeError:
         salary = ''
 
-    try:
-        extract_date = datetime.datetime.today().strftime('%Y-%m-%d')
-    except AttributeError:
-        extract_date = ''
+    extract_date = datetime.datetime.today().strftime('%Y-%m-%d')
 
     job_url = 'https://www.indeed.com' + atag.get('href')
 
@@ -166,11 +163,8 @@ def get_record(card):
 def get_url(position, location):
     "Generate a url based on position and location"
 
-    try:
-        template = "https://www.indeed.com/jobs?q={}&l={}"
-        url = template.format(position, location)
-    except AttributeError:
-        url = ''
+    template = "https://www.indeed.com/jobs?q={}&l={}"
+    url = template.format(position, location)
 
     return url
 
