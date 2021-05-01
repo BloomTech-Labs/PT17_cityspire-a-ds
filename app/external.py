@@ -166,8 +166,11 @@ def get_record(card):
 def get_url(position, location):
     "Generate a url based on position and location"
 
-    template = "https://www.indeed.com/jobs?q={}&l={}"
-    url = template.format(position, location)
+    try:
+        template = "https://www.indeed.com/jobs?q={}&l={}"
+        url = template.format(position, location)
+    except AttributeError:
+        url = ''
 
     return url
 
