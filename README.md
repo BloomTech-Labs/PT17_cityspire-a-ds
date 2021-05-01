@@ -11,8 +11,7 @@ This app will present such important data in an intuitive and easy to understand
 Use data to find a place right for you to live.
 
 ## DEMO
-
-[![CitySpire API Demo](http://img.youtube.com/vi/WSLJawDw1aQ/0.jpg)](https://www.youtube.com/watch?v=WSLJawDw1aQ "CitySpire API Demo")
+[![CitySpire 2.0 API Demo](http://img.youtube.com/vi/Rz84nk3_W54/0.jpg)](https://www.youtube.com/watch?v=Rz84nk3_W54 "CitySpire 2.0 API Demo")
 
 ## LOCAL TESTING
 
