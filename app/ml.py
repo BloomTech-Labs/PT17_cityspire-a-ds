@@ -78,14 +78,13 @@ def validate_city(
     Full name to All Caps ABBR if needed.
 
     args:
-        city: The City object to be Validated
+    - city: The City object to be Validated
 
     returns:
-        a City object in a proper format to be used elsewhere.
+    - a City object in a proper format to be used elsewhere.
 
     raises:
-        HTTPException:
-            If the state cannot be converted into an ABBR
+    - HTTPException: If the state cannot be converted into an ABBR
     """
 
     city.city = city.city.title()
@@ -110,11 +109,10 @@ async def get_data(city: City):
     return data
 
     args:
-        city: The target city
+    - city: The target city
 
     returns:
-        Dictionary that contains the requested data, which is converted
-        by fastAPI to a json object.
+    - Dictionary that contains the requested data, which is converted by fastAPI to a json object.
     """
 
     city = validate_city(city)
@@ -144,11 +142,10 @@ async def get_coordinates(city: City):
     Fetch data from DB
 
     args:
-        city: The target city
+    - city: The target city
 
     returns:
-        Dictionary that contains the requested data, which is converted
-        by fastAPI to a json object.
+    - Dictionary that contains the requested data, which is converted by fastAPI to a json object.
     """
 
     city = validate_city(city)
@@ -163,11 +160,10 @@ async def get_crime(city: City):
     Fetch data from DB
 
     args:
-        city: The target city
+    - city: The target city
 
     returns:
-        Dictionary that contains the requested data, which is converted
-        by fastAPI to a json object.
+    - Dictionary that contains the requested data, which is converted by fastAPI to a json object.
     """
 
     city = validate_city(city)
@@ -182,11 +178,10 @@ async def get_rental_price(city: City):
     Fetch data from DB
 
     args:
-        city: The target city
+    - city: The target city
 
     returns:
-        Dictionary that contains the requested data, which is converted
-        by fastAPI to a json object.
+    - Dictionary that contains the requested data, which is converted by fastAPI to a json object.
     """
 
     city = validate_city(city)
@@ -201,11 +196,10 @@ async def get_pollution(city: City):
     Fetch data from DB
 
     args:
-        city: The target city
+    - city: The target city
 
     returns:
-        Dictionary that contains the requested data, which is converted
-        by fastAPI to a json object.
+    - Dictionary that contains the requested data, which is converted by fastAPI to a json object.
     """
 
     city = validate_city(city)
@@ -218,11 +212,10 @@ async def get_walkability(city: City):
     """Retrieve walkscore for target city
 
     args:
-        city: The target city
+    - city: The target city
 
     returns:
-        Dictionary that contains the requested data, which is converted
-        by fastAPI to a json object.
+    - Dictionary that contains the requested data, which is converted by fastAPI to a json object.
     """
 
     city = validate_city(city)
@@ -241,11 +234,10 @@ async def get_transitscore(city: City):
     """Retrieve bus score for target city
 
     args:
-        city: The target city
+    - city: The target city
 
     returns:
-        Dictionary that contains the requested data, which is converted
-        by fastAPI to a json object.
+    - Dictionary that contains the requested data, which is converted by fastAPI to a json object.
     """
 
     city = validate_city(city)
@@ -264,11 +256,10 @@ async def get_bikescore(city: City):
     """Retrieve bike score for target city
 
     args:
-        city: The target city
+    - city: The target city
 
     returns:
-        Dictionary that contains the requested data, which is converted
-        by fastAPI to a json object.
+    - Dictionary that contains the requested data, which is converted by fastAPI to a json object.
     """
 
     city = validate_city(city)
@@ -286,8 +277,8 @@ async def get_walkscore(city: str, state: str):
     """Scrape Walkscore.
 
     args:
-        city: The target city
-        state: Target state as an all-caps 2-letter abbr
+    - city: The target city
+    - state: Target state as an all-caps 2-letter abbr
 
     returns:
         List containing WalkScore, BusScore, and BikeScore in that order
@@ -306,12 +297,11 @@ async def get_livability(city: City, weights: LivabilityWeights = None):
     return data
 
     args:
-        city: The target city
-        LivabilityWeights: Weights for the to use for calculation
+    - city: The target city
+    - LivabilityWeights: Weights for the to use for calculation
 
     returns:
-        Dictionary that contains the requested data, which is converted
-        by fastAPI to a json object.
+    - Dictionary that contains the requested data, which is converted by fastAPI to a json object.
     """
 
     city = validate_city(city)
@@ -362,12 +352,11 @@ async def get_livability_score(city: City, city_data: CityDataFull):
     return data
 
     args:
-        city: The target city
+    - city: The target city
 
 
     returns:
-        Dictionary that contains the requested data, which is converted
-            by fastAPI to a json object.
+    - Dictionary that contains the requested data, which is converted by fastAPI to a json object.
     """
 
     with open("app/data/pickle_model/livability_scaler.pkl", "rb") as f:
@@ -398,11 +387,10 @@ async def get_population(city: City):
     Fetch data from DB
 
     args:
-        city: The target city
+    - city: The target city
 
     returns:
-        Dictionary that contains the requested data, which is converted
-            by fastAPI to a json object.
+    - Dictionary that contains the requested data, which is converted by fastAPI to a json object.
     """
 
     city = validate_city(city)
@@ -420,8 +408,7 @@ async def get_school_summary(city: City):
     - city: The target city
 
     returns:
-    - Dictionary that contains the requested data, which is converted
-    by fastAPI to a json object.
+    - Dictionary that contains the requested data, which is converted by fastAPI to a json object.
     """
 
     city = validate_city(city)
@@ -440,11 +427,10 @@ async def get_recommendations(city: City):
     Fetch data from DB
 
     args:
-        city: The target city
+    - city: The target city
 
     returns:
-        Dictionary that contains the requested data, which is converted
-            by fastAPI to a json object.
+    - Dictionary that contains the requested data, which is converted by fastAPI to a json object.
     """
 
     city = validate_city(city)
@@ -461,11 +447,10 @@ async def get_recommendation_cities(city: City, nearest_string: str):
     Fetch data from DB
 
     args:
-        nearest_string: String consisting of the index numbers of the recommended cities.
+    - nearest_string: String consisting of the index numbers of the recommended cities.
 
     returns:
-        Dictionary that contains the requested data, which is converted
-            by fastAPI to a json object.
+    - Dictionary that contains the requested data, which is converted by fastAPI to a json object.
     """
 
     test_list = nearest_string.split(",")

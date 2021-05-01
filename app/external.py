@@ -66,7 +66,6 @@ async def current_weather(city:City):
 @router.post('/api/job_opportunities')
 async def job_opportunities(position, city:City):
     """Returns jobs opportunities from indeed.com
-
     Fetch first 10 job opportunities
     - Job title,
     - Company,
@@ -76,11 +75,9 @@ async def job_opportunities(position, city:City):
     - Job Description,
     - Salary,
     - Job Url
-
     args:
     - position: desired job opportunity
     - city: target city
-
     returns:
     - Dictionary that contains the requested data, which is converted by fastAPI to a json object.
     """
@@ -145,10 +142,7 @@ def get_record(card):
     except AttributeError:
         salary = ''
 
-    try:
-        extract_date = datetime.datetime.today().strftime('%Y-%m-%d')
-    except AttributeError:
-        extract_date = ''
+    extract_date = datetime.datetime.today().strftime('%Y-%m-%d')
 
     job_url = 'https://www.indeed.com' + atag.get('href')
 

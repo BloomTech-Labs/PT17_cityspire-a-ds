@@ -233,22 +233,22 @@ http://cityspire-a.eba-tgambvt2.us-east-1.elasticbeanstalk.com/
 Below are the visualization endpoints that allows users to visualize and get a better sense of the cities datapoints
 
 * /api/demographics_graph
-  ![Demographics](https://github.com/Lambda-School-Labs/PT17_cityspire-a-ds/blob/main/notebooks/visuals/demographics.png)
+  ![Demographics](https://github.com/Lambda-School-Labs/PT17_cityspire-a-ds/blob/main/notebooks/visuals/files/demographics.png)
 
 * /api/employment_graph
-  ![Employment](https://github.com/Lambda-School-Labs/PT17_cityspire-a-ds/blob/main/notebooks/visuals/employment.png)
+  ![Employment](https://github.com/Lambda-School-Labs/PT17_cityspire-a-ds/blob/main/notebooks/visuals/files/employment.png)
 
 * /api/crime_graph
-  ![Crime Statistics](https://github.com/Lambda-School-Labs/PT17_cityspire-a-ds/blob/main/notebooks/visuals/crime.png)
+  ![Crime Statistics](https://github.com/Lambda-School-Labs/PT17_cityspire-a-ds/blob/main/notebooks/files/visuals/crime.png)
 
 * /api/aqi_graph
-  ![Air Quality](https://github.com/Lambda-School-Labs/PT17_cityspire-a-ds/blob/main/notebooks/visuals/air_quality.png)
+  ![Air Quality](https://github.com/Lambda-School-Labs/PT17_cityspire-a-ds/blob/main/notebooks/visuals/files/air_quality.png)
 
 * /api/population_forecast_graph
-  ![Population Forecast](https://github.com/Lambda-School-Labs/PT17_cityspire-a-ds/blob/main/notebooks/visuals/population.png)
+  ![Population Forecast](https://github.com/Lambda-School-Labs/PT17_cityspire-a-ds/blob/main/notebooks/visuals/files/population.png)
 
 * /api/rental_forecast_graph
-  ![Rental Forecast](https://github.com/Lambda-School-Labs/PT17_cityspire-a-ds/blob/main/notebooks/visuals/rental_forecast.png)
+  ![Rental Forecast](https://github.com/Lambda-School-Labs/PT17_cityspire-a-ds/blob/main/notebooks/visuals/files/rental_forecast.png)
 
 #### External
 
@@ -390,7 +390,7 @@ D = 1 - ((Σ n(n-1)/ (N(N-1))
 #### Air Quality Index
 
 To determine overall air quality for each city, we used the median value and then created an algorithm that separated it based on https://www.airnow.gov/aqi/aqi-basics/ index.
-![Air Quality Index](https://github.com/Lambda-School-Labs/PT17_cityspire-a-ds/blob/main/notebooks/datasets/data/pollution/aqi_index.png)
+![Air Quality Index](https://github.com/Lambda-School-Labs/PT17_cityspire-a-ds/blob/main/notebooks/visuals/files/air_quality.png)
 
 #### Crime Rate Per 1000
 
