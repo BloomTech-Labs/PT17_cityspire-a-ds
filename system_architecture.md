@@ -2,7 +2,7 @@
 ### DATA SCIENCE SYSTEM ARCHITECTURE
 
 Labs 2:
-![image](https://github.com/Lambda-School-Labs/PT17_cityspire-a-ds/blob/feature/fix_errors/notebooks/visuals/files/Cityspire%20The%20A%20Team.png)
+![image](notebooks/visuals/files/Cityspire The A Team.png)
 
 https://whimsical.com/cityspire-the-a-team-NcMs8vYXzUR6JWsHgsH4CE
 
